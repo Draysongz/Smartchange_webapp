@@ -62,6 +62,7 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
         await connector.activate(1);
         setConnectionStatus('Connected');
         console.log(connectionStatus);
+        router.push('/')
       } catch (e : any) {
         connector.resetState();
         setError(e);
