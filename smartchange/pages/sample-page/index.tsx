@@ -3,8 +3,10 @@ import { Typography } from '@mui/material';
 import PageContainer from '../../src/components/container/PageContainer';
 import DashboardCard from '../../src/components/shared/DashboardCard';
 import FullLayout from '../../src/layouts/full/FullLayout';
+import { NextPageContext } from 'next';
+import {requireAuth} from '../api/middleware/requireAuth'
 
-const SamplePage = () => {
+const SamplePage = ({ user }: { user: any }) => {
   return (
     <PageContainer title="Sample Page" description="this is Sample page">
       <DashboardCard title="Sample Page">
@@ -13,6 +15,8 @@ const SamplePage = () => {
     </PageContainer>
   );
 };
+
+
 
 export default SamplePage;
 SamplePage.getLayout = function getLayout(page: ReactElement) {

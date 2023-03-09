@@ -1,4 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -38,6 +40,7 @@ const MyApp = (props: MyAppProps) => {
         <CssBaseline />
         {getLayout(<Component {...pageProps} />)}
       </ThemeProvider>
+      <ToastContainer/>
     </CacheProvider>
   );
 };
