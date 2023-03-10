@@ -1,11 +1,11 @@
 import React, {useState, createContext, useContext} from 'react'
 
 type authContextType = {
-    username:string,
+    user:string,
     secret: string
 };
 const authContextDefaultValues: authContextType = {
-    username: 'Dray',
+    user: 'Dray',
     secret: ''
 };
 
@@ -21,13 +21,13 @@ type Props = {
 };
 
 export function AuthProvider({ children }: Props) {
-    const [secret, setSecret    ] = useState("")
-    const [password, setPassword] = useState("")
+    const [user, setUser    ] = useState("")
+    const [secret, setSecret] = useState("")
     const value = {
-        username,
-        setUsername,
-        password,
-        setPassword
+        user,
+        setUser,
+        secret,
+        setSecret
     }
     return (
         <>
