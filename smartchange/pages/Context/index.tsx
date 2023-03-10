@@ -21,7 +21,7 @@ type Props = {
 };
 
 export function AuthProvider({ children }: Props) {
-    const [username, setUsername] = useState("")
+    const [secret, setSecret    ] = useState("")
     const [password, setPassword] = useState("")
     const value = {
         username,
