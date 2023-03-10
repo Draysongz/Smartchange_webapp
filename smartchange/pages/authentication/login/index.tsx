@@ -52,7 +52,7 @@ const Login2 = () => {
                 subtitle={
                   <Stack direction="row" spacing={1} justifyContent="center" mt={3}>
                     <Typography color="textSecondary" variant="h6" fontWeight="500">
-                      Don&apos;,t have an account?
+                      Don't have an account?
                     </Typography>
                     <Typography
                       component={Link}
