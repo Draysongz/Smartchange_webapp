@@ -1,9 +1,8 @@
 import User from '../Model/userModel';
 import bcrypt from 'bcryptjs'
-import connectDB from "../db/connection"
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-connectDB()
+
 
 export default async function signup(req: NextApiRequest,
   res: NextApiResponse){

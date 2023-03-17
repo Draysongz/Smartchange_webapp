@@ -13,9 +13,11 @@ import {useState} from 'react'
 import { useRouter } from 'next/router';
 import {toast} from 'react-toastify'
 import connectors from  '../../api/Ud'
-import {AuthContext} from '../../Context/index'
+
 
 import CustomTextField from "../../../src/components/forms/theme-elements/CustomTextField";
+import {AuthContext} from '../../Context/AuthContext'
+import axios from 'axios'
 
 interface loginType {
   title?: string;
@@ -36,11 +38,16 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [username, setUsername] = useState("")
 
-  // const {setUser, setSecret} = useContext(AuthContext)
 
-
+  const authContext = useContext(AuthContext)
+  console.log("authContext", authContext)
+  
    const router = useRouter();
+        
+   const privateKey = process.env.NEXT_PUBLIC_CHAT_ENGINE_PRIVATE_KEY;
+
 
    const handleToggleConnect = async () => {
     setError(undefined); // Clear error state
@@ -81,9 +88,41 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
         body: JSON.stringify({ email, password })
       })
       if (response.ok) {
+        const data = await response.json();
         toast.success('login successful');
-        console.log(response.json())
-        router.push('/');
+        console.log(data)
+        const user = data.username
+       authContext.setUser({
+        name: user,
+        secret: password
+       })
+       console.log(user)
+      
+       
+   
+      const responseChat = await fetch("https://api.chatengine.io/users/", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Private-Key": "043648d7-6088-4215-809e-b15aa1c5ec81"
+        },
+        body: JSON.stringify({ 
+          "username" : user, 
+          "secret" : password })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Request failed with status code " + response.status);
+          }
+          // handle successful response
+          const chatData = response.json()
+        })
+        .catch(error => {
+          console.error(error);
+          // handle error
+        });
+      
+       router.push('/')
       } else {
         const { status } = response;
         if (status === 503) {

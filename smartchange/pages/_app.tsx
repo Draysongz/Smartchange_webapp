@@ -10,6 +10,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import createEmotionCache from "../src/createEmotionCache";
 import { baselightTheme } from "../src/theme/DefaultColors";
+import {useEffect} from 'react'
+import connectDB from './authentication/db/connection'
+import {AuthContextProvider} from './Context/AuthContext'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -24,12 +27,17 @@ interface MyAppProps extends AppProps {
 }
 
 const MyApp = (props: MyAppProps) => {
+ 
+  connectDB()
+
+
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const theme = baselightTheme;
 
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
+    <AuthContextProvider>
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
@@ -42,6 +50,7 @@ const MyApp = (props: MyAppProps) => {
       </ThemeProvider>
       <ToastContainer/>
     </CacheProvider>
+    </AuthContextProvider>
   );
 };
 

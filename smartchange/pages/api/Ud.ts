@@ -3,8 +3,11 @@ import {MetaMask} from '@web3-react/metamask'
 import {WalletConnect} from '@web3-react/walletconnect'
 import UAuth from '@uauth/js'
 import {UAuthConnector} from '@uauth/web3-react'
+import { Actions, Connector, Web3ReactState, Web3ReactStore } from '@web3-react/types';
 
-
+type connector = {
+  connector : Connector
+};
 UAuthConnector.registerUAuth(UAuth);
 
 const metaMask = initializeConnector((actions) => new MetaMask({ actions }));
@@ -25,7 +28,7 @@ const uauth = initializeConnector(
     actions,
     options: {
       clientID: 'e645eff4-60dc-400c-a30e-4bd35019d379',
-      redirectUri: 'http://localhost:3000',
+      hostUri: 'http://localhost:3000',
       scope: 'openid wallet profile:optional social:optional ',
 
       connectors: {injected: metaMask[0], walletconnect: walletConnect[0]}

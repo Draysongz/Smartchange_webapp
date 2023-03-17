@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+
 import { Grid, Box } from '@mui/material';
 import PageContainer from '../src/components/container/PageContainer';
 
@@ -7,11 +8,13 @@ import CardY from '../src/components/dashboard/CardY';
 import Blog from '../src/components/dashboard/Merchants';
 import Cardo from '../src/components/dashboard/Cardo';
 import FullLayout from '../src/layouts/full/FullLayout';
-import {AuthProvider} from './Context/index'
+
+
 
 export default function Home() {
+
   return (
-    // <AuthProvider>
+    
     <PageContainer title="Dashboard" description="this is Dashboard">
       <Box>
         <Grid container spacing={3}>
@@ -31,7 +34,6 @@ export default function Home() {
         </Grid>
       </Box>
     </PageContainer>
-    // </AuthProvider>
   );
 }
 
