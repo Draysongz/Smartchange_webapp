@@ -38,7 +38,7 @@ const Shadow = () => {
   console.log(authContext)
   const [username, setUsername] = useState('')
 
-	function createDirectChat(creds) {
+	function createDirectChat(creds : any) {
 		getOrCreateChat(
 			creds,
 			{ is_direct_chat: true, usernames: [username] },
@@ -46,7 +46,7 @@ const Shadow = () => {
 		)
 	}
 
-	function renderChatForm(creds) {
+	function renderChatForm(creds : any) {
 		return (
 			<div>
 				<input 
@@ -90,7 +90,7 @@ const Shadow = () => {
                     userName={authContext.user?.name}
                     userSecret={authContext.user?.secret}
                     renderNewMessageForm = {()=> <MessageFormSocial/>}
-                    renderNewChatForm={(creds) => renderChatForm(creds)}
+                    renderNewChatForm={(creds : any) => renderChatForm(creds)}
                     
                 />
     </PageContainer>
