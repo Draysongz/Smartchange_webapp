@@ -1,13 +1,12 @@
 {
-  "name": "modernize-next-ts",
+  "name": "smartchange",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
+    "start": "next start -H 0.0.0.0 -p ${PORT:-8080}",
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/cache": "latest",
