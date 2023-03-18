@@ -21,7 +21,7 @@ import {AuthContext} from '../../Context/AuthContext'
 const TypographyPage = () => {
   const [merchantUsers, setMerchantUsers] = useState([]);
   const[username, setUsername]= useState('')
-  const [selectedUser, setSelectedUser] = useState<string[]>([]);
+  
   useEffect(() => {
     async function fetchMerchantUsers() {
       try {
@@ -44,7 +44,7 @@ const TypographyPage = () => {
     setUsername(username);
    
   }
-   setSelectedUser(prevState => [...prevState, username])
+
   const authContext = useContext(AuthContext)
   console.log(authContext)
   const creds = {
@@ -54,11 +54,12 @@ const TypographyPage = () => {
     privateKey: "043648d7-6088-4215-809e-b15aa1c5ec81"
   };
   
-  setSelectedUser(prevState => [...prevState, creds.userName])
+  
   
   const router = useRouter();
   
   async function createDirectChat() {
+    
     const url = 'https://api.chatengine.io/chats/';
     const response = await fetch(url, {
       method: 'PUT',
@@ -67,15 +68,20 @@ const TypographyPage = () => {
         'Content-Type': 'application/json',
         'User-Name': `${creds.userName!} `,
         'User-Secret': `${creds.userSecret!}`,
-        "is_direct_chat": true.toString(),
-        "Private-Key": `${creds.privateKey}`,
-        'Access-Control-Allow-Origin': '*'
       },
-      body: JSON.stringify({ 'usernames': selectedUser})
+      body: JSON.stringify({ 
+        usernames: [username, creds.userName],
+        "title": "P2P Trade",
+      })
     });
     const data = await response.json();
     console.log(data)
+    if(data != '' && response.ok){
+      toast.success('Conversation started')
+    router.push('/utilities/chats')
     return data;
+    }
+    
   }
   
   

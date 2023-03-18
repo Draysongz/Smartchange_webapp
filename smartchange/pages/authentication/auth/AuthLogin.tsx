@@ -12,12 +12,12 @@ import Link from "next/link";
 import {useState} from 'react'
 import { useRouter } from 'next/router';
 import {toast} from 'react-toastify'
-import connectors from  '../../api/Ud'
+import UAuth from '@uauth/js'
 
 
 import CustomTextField from "../../../src/components/forms/theme-elements/CustomTextField";
 import {AuthContext} from '../../Context/AuthContext'
-import axios from 'axios'
+
 
 interface loginType {
   title?: string;
@@ -27,13 +27,12 @@ interface loginType {
 
 export default function AuthLogin({ title, subtitle, subtext }: loginType) {
 
- 
-   const connector = connectors["UAuth"][0]
-
-  const { useIsActivating, useIsActive } = connectors["UAuth"][1]
-  const isActivating = useIsActivating()
-  const isActive = useIsActive()
-  const [connectionStatus, setConnectionStatus] = useState('Disconnected')
+  const uauth =new UAuth({
+    clientID: 'e645eff4-60dc-400c-a30e-4bd35019d379',
+ redirectUri: 'http://localhost:3000',
+ scope: 'openid wallet profile:optional social:optional ',
+})
+   
   const [error, setError] = useState()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -50,32 +49,16 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
 
 
    const handleToggleConnect = async () => {
-    setError(undefined); // Clear error state
-  
-    if (isActive) {
-      if (connector?.deactivate) {
-        await connector.deactivate();
-      } else {
-        await connector.resetState();
-      }
-      setConnectionStatus('Disconnected');
-      console.log(connectionStatus);
-    } else if (!isActivating) {
-      setConnectionStatus('Connecting...');
-      console.log(connectionStatus);
-  
-      try {
-        // Activate the connector and update states
-        await connector.activate(1);
-        setConnectionStatus('Connected');
-        console.log(connectionStatus);
-        router.push('/')
-      } catch (e : any) {
-        connector.resetState();
-        setError(e);
-        console.log(error);
-      }
+    try {
+      const authorization = await uauth.loginWithPopup()
+   
+      console.log(authorization)
+      router.push('/')
+    } catch (error) {
+      console.error(error)
     }
+   
+      
   };
   
   const login = async(e : any)=>{
