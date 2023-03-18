@@ -149,7 +149,7 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
         >
           Email
         </Typography>
-        <CustomTextField variant="outlined" fullWidth onChange={(e)=> setEmail(e.target.value)} />
+        <CustomTextField variant="outlined" fullWidth onChange={(e: any)=> setEmail(e.target.value)} />
       </Box>
       <Box mt="25px">
         <Typography
@@ -161,7 +161,7 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
         >
           Password
         </Typography>
-        <CustomTextField type="password" variant="outlined" fullWidth onChange={(e)=> setPassword(e.target.value)} />
+        <CustomTextField type="password" variant="outlined" fullWidth onChange={(e: any)=> setPassword(e.target.value)} />
       </Box>
       <Stack
         justifyContent="space-between"

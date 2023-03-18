@@ -70,23 +70,23 @@ export default function  AuthRegister({ title, subtitle, subtext }: registerType
             <Stack mb={3}>
                 <Typography variant="subtitle1"
                     fontWeight={600} component="label" htmlFor='name' mb="5px">Username</Typography>
-                <CustomTextField id="name" onChange={(e)=> setUsername(e.target.value)} variant="outlined" fullWidth />
+                <CustomTextField id="name" onChange={(e : any)=> setUsername(e.target.value)} variant="outlined" fullWidth />
 
                 <Typography variant="subtitle1"
                     fontWeight={600} component="label" htmlFor='email' mb="5px" mt="25px">Email Address</Typography>
-                <CustomTextField id="email"onChange={(e)=> setEmail(e.target.value)} variant="outlined" fullWidth />
+                <CustomTextField id="email"onChange={(e : any)=> setEmail(e.target.value)} variant="outlined" fullWidth />
 
                 <Typography variant="subtitle1"
                     fontWeight={600} component="label" htmlFor='name' mb="5px">Phone</Typography>
-                <CustomTextField id="name"onChange={(e)=> setNumber(e.target.value)} variant="outlined" fullWidth />
+                <CustomTextField id="name"onChange={(e :any)=> setNumber(e.target.value)} variant="outlined" fullWidth />
 
                 <Typography variant="subtitle1"
                     fontWeight={600} component="label" htmlFor='password' mb="5px" mt="25px">Password</Typography>
-                <CustomTextField id="password" onChange={(e)=> setPassword(e.target.value)} variant="outlined" fullWidth />
+                <CustomTextField id="password" onChange={(e : any)=> setPassword(e.target.value)} variant="outlined" fullWidth />
 
                 <Typography variant="subtitle1"
                     fontWeight={600} component="label" htmlFor='password' mb="5px" mt="25px">Confirm Password</Typography>
-                <CustomTextField id="password" onChange={(e)=> setConfirm(e.target.value)} variant="outlined" fullWidth />
+                <CustomTextField id="password" onChange={(e :any)=> setConfirm(e.target.value)} variant="outlined" fullWidth />
             </Stack>
             <Button color="primary" variant="contained" size="large" fullWidth  onClick={register}>
                 Sign Up
