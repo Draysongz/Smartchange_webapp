@@ -4,7 +4,7 @@ import { Typography, Grid, CardContent } from '@mui/material';
 import PageContainer from '../../../src/components/container/PageContainer';
 import DashboardCard from '../../../src/components/shared/DashboardCard';
 import BlankCard from '../../../src/components/shared/BlankCard';
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useContext} from 'react'
 import {toast} from 'react-toastify'
 import styles from'./swap.module.css'
 import Image from 'next/image'
@@ -12,11 +12,16 @@ import profile from './assets/eclipse.png'
 import algo from './assets/algo.png'
 import star from './assets/star.png'
 import arrow from './assets/arrow.png'
+import { useRouter } from "next/router";
+import { getOrCreateChat } from 'react-chat-engine'
+import {AuthContext} from '../../Context/AuthContext'
 
 
 
 const TypographyPage = () => {
   const [merchantUsers, setMerchantUsers] = useState([]);
+  const[username, setUsername]= useState('')
+  const [selectedUser, setSelectedUser] = useState<string[]>([]);
   useEffect(() => {
     async function fetchMerchantUsers() {
       try {
@@ -33,7 +38,47 @@ const TypographyPage = () => {
     }
     fetchMerchantUsers();
   }, []);
-  console.log(merchantUsers)
+ 
+  console.log(username)
+  function user(username: string) {
+    setUsername(username);
+   
+  }
+   setSelectedUser(prevState => [...prevState, username])
+  const authContext = useContext(AuthContext)
+  console.log(authContext)
+  const creds = {
+    userName: authContext.user?.name,
+    userSecret: authContext.user?.secret,
+    projectId: "72fd6d6c-3d31-4837-b92d-1c8725e0f8c8",
+    privateKey: "043648d7-6088-4215-809e-b15aa1c5ec81"
+  };
+  
+  setSelectedUser(prevState => [...prevState, creds.userName])
+  
+  const router = useRouter();
+  
+  async function createDirectChat() {
+    const url = 'https://api.chatengine.io/chats/';
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Project-ID': `${creds.projectId!}`,
+        'Content-Type': 'application/json',
+        'User-Name': `${creds.userName!} `,
+        'User-Secret': `${creds.userSecret!}`,
+        "is_direct_chat": true.toString(),
+        "Private-Key": `${creds.privateKey}`,
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({ 'usernames': selectedUser})
+    });
+    const data = await response.json();
+    console.log(data)
+    return data;
+  }
+  
+  
   return (
     <PageContainer title="Smart Swap" description="Smart Swap">
 
@@ -68,9 +113,9 @@ const TypographyPage = () => {
                       {/* data and styling runs here dray */}
                       <div className='mercCard'>
                       <div className={styles.merchant}>
-                        {merchantUsers.map((e : any)=>{
+                        {merchantUsers.map((e : any, index :any)=>{
                           return(
-                            <BlankCard className={styles.userContainer}>
+                            <BlankCard className={styles.userContainer} key={index}>
                               <CardContent className={styles.left}  >
                                 <div className={styles.userDeets}>
                             <Image src={profile} alt='profile' width='50'/>
@@ -105,7 +150,8 @@ const TypographyPage = () => {
                             </div>
                             <div className={styles.buttons}>
                               <button className={styles.reviews}>Reviews</button>
-                              <button className={styles.select}>Select</button>
+                              <button className={styles.select} value={e.username} onClick={() => { user(e.username); createDirectChat(); }}>Select</button>
+
                             </div>
                             </CardContent>
                             </BlankCard>
