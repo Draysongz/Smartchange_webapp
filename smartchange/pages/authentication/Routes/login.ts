@@ -20,7 +20,6 @@ export default async function login(req: NextApiRequest,
 
        res.status(200).json({...others, token})
    }catch(err){
-    console.error(err.stack);
     return res.status(500).json({ error: 'Internal server error' })
    }
 }
