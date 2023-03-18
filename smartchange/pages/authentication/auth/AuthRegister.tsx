@@ -26,7 +26,7 @@ export default function  AuthRegister({ title, subtitle, subtext }: registerType
 
   
 
-  const register = async (e) => {
+  const register = async (e : any) => {
     e.preventDefault();
     try {
         if(password == confirm){
