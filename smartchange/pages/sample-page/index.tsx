@@ -4,7 +4,7 @@ import PageContainer from '../../src/components/container/PageContainer';
 import DashboardCard from '../../src/components/shared/DashboardCard';
 import FullLayout from '../../src/layouts/full/FullLayout';
 import { NextPageContext } from 'next';
-import {requireAuth} from '../api/middleware/requireAuth'
+
 
 const SamplePage = ({ user }: { user: any }) => {
   return (
