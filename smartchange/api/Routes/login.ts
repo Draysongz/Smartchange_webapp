@@ -1,10 +1,10 @@
 import User from '../Model/userModel';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-
+import connectDB from '../db/connection'
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-
+connectDB()
 export default async function login(req: NextApiRequest,
     res: NextApiResponse){
     try{
