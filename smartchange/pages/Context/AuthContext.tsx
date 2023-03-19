@@ -20,7 +20,7 @@ type AuthUser = {
 export const AuthContext = createContext({} as AuthContextType) 
 
 
-export const AuthContextProvider = ({children}: AuthContextProviderType) =>{
+ const AuthContextProvider = ({children}: AuthContextProviderType) =>{
     const [user, setUser] = useState<AuthUser | null>(null);
     return (
     <AuthContext.Provider value ={{user, setUser}}>
@@ -28,3 +28,5 @@ export const AuthContextProvider = ({children}: AuthContextProviderType) =>{
     </AuthContext.Provider>
     )
 }
+
+export default AuthContextProvider;
