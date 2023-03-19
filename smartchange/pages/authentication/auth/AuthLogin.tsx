@@ -13,7 +13,9 @@ import {useState} from 'react'
 import { useRouter } from 'next/router';
 import {toast} from 'react-toastify'
 import UAuth from '@uauth/js'
-
+import styles from './button.module.css'
+import udlogo from './ud.webp'
+import Image from 'next/image'
 
 import CustomTextField from "../../../src/components/forms/theme-elements/CustomTextField";
 import {AuthContext} from '../../Context/AuthContext'
@@ -210,9 +212,10 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
         fullWidth
         type="submit"
         onClick={handleToggleConnect}
+        className={styles.unstoppable}
         
       >
-        Login with Unstoppable
+        <Image src={udlogo} alt='ud' width='40' className={styles.ud}/>  Login with Unstoppable
       </Button>
     </Box>
     {subtitle}
