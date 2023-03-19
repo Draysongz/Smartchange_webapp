@@ -11,7 +11,7 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import createEmotionCache from "../src/createEmotionCache";
 import { baselightTheme } from "../src/theme/DefaultColors";
 import {useEffect} from 'react'
-i
+
 import AuthContextProvider from './Context/AuthContext'
 
 // Client-side cache, shared for the whole session of the user in the browser.
