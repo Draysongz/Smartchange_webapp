@@ -77,6 +77,14 @@ const Shadow = () => {
       </div>
     )
   }
+  const [showChat, setShowChat] = useState(false)
+  useEffect(() => {
+    if (typeof document !== undefined) {
+      setShowChat(true)
+    }
+  }, [])
+
+  if (!showChat) return <div />
 
   return (
     <PageContainer title="Chat" description="this is Shadow">
