@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import signup from '../authentication/Routes/signup'
+import getMerchants from './Routes/getMerchants'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === 'POST') {
-      signup(req, res);
+    if (req.method === 'GET') {
+      getMerchants(req, res);
     } else {
       res.status(405).json({ message: 'Method not allowed' });
     }
