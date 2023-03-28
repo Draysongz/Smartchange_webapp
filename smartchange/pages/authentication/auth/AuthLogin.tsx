@@ -31,7 +31,7 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
 
   const uauth =new UAuth({
     clientID: 'e645eff4-60dc-400c-a30e-4bd35019d379',
- redirectUri: 'https://plankton-app-k3qqz.ondigitalocean.app/',
+ redirectUri: 'https://app.smartchange.app/',
  scope: 'openid wallet profile:optional social:optional ',
 })
    
