@@ -29,7 +29,7 @@ export default function  AuthRegister({ title, subtitle, subtext }: registerType
   const register = async (e : any) => {
     e.preventDefault();
     try {
-        if(password == confirm){
+        if(password === confirm){
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -82,11 +82,11 @@ export default function  AuthRegister({ title, subtitle, subtext }: registerType
 
                 <Typography variant="subtitle1"
                     fontWeight={600} component="label" htmlFor='password' mb="5px" mt="25px">Password</Typography>
-                <CustomTextField id="password" onChange={(e : any)=> setPassword(e.target.value)} variant="outlined" fullWidth />
+                <CustomTextField id="password" onChange={(e : any)=> setPassword(e.target.value)} variant="outlined" type="password" fullWidth />
 
                 <Typography variant="subtitle1"
                     fontWeight={600} component="label" htmlFor='password' mb="5px" mt="25px">Confirm Password</Typography>
-                <CustomTextField id="password" onChange={(e :any)=> setConfirm(e.target.value)} variant="outlined" fullWidth />
+                <CustomTextField id="password" onChange={(e :any)=> setConfirm(e.target.value)} variant="outlined" type="password" fullWidth />
             </Stack>
             <Button color="primary" variant="contained" size="large" fullWidth  onClick={register}>
                 Sign Up
