@@ -28,6 +28,8 @@ export default function  AuthRegister({ title, subtitle, subtext }: registerType
 
   const register = async (e : any) => {
     e.preventDefault();
+    console.log(password)
+    console.log(confirm)
     try {
         if(password === confirm){
       const response = await fetch('/api/register', {
