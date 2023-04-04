@@ -13,12 +13,15 @@ export default async function signup(req: NextApiRequest,
 
     const usernameExists = await User.findOne({ username: req.body.username });
     const emailExists = await User.findOne({ email: req.body.email });
-
+    const phoneExists = await User.findOne({ number: req.body.number });
     if (usernameExists) {
       return res.status(503).json( 'Username exists' )
     } else if (emailExists) {
       return res.status(503).json('Email exists' )
+    } else if (phoneExists) {
+      return res.status(503).json('Phone number exists' )
     } 
+
       const newUser = new User({
         username: req.body.username,
         password: hash,

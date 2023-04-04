@@ -47,7 +47,7 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
   
    const router = useRouter();
         
-   const privateKey = process.env.NEXT_PUBLIC_CHAT_ENGINE_PRIVATE_KEY;
+  
 
 
    const handleToggleConnect = async () => {
@@ -82,30 +82,7 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
         secret: password
        })
        console.log(user)
-      
-       
-   
-      const responseChat = await fetch("https://api.chatengine.io/users/", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Private-Key": "043648d7-6088-4215-809e-b15aa1c5ec81"
-        },
-        body: JSON.stringify({ 
-          "username" : user, 
-          "secret" : password })
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error("Request failed with status code " + response.status);
-          }
-          // handle successful response
-          const chatData = response.json()
-        })
-        .catch(error => {
-          console.error(error);
-          // handle error
-        });
+
       
        router.push('/')
       } else {
