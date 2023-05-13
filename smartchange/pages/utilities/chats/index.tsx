@@ -80,7 +80,7 @@ const Shadow = () => {
       socket.on("receive-message", (data)=>{
         setReceivedMessage(data)
       })
-    
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
   useEffect(()=>{
@@ -117,8 +117,8 @@ const Shadow = () => {
           <div className={Styles.Chatcontainer}>
           <h2>Chat</h2>
           <div className={Styles.Chatlist}>
-          {chats.map((chat)=>(
-              <div onClick={()=>setCurrentChat(chat)}>
+          {chats.map((chat, index)=>(
+              <div onClick={()=>setCurrentChat(chat)} key={index}>
                 <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)}/>
               </div>
             ))}
