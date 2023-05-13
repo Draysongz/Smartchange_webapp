@@ -1,7 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server'
 import {verifyAuth} from './lib/auth'
 
-export async function Middleware(req: NextRequest, next: () => NextResponse) {
+export async function Middleware(req: NextRequest, NextResponse) {
 
   // Get the JWT token from the user's cookies
   const token = req.cookies.get('myJWT')?.value
@@ -15,7 +15,6 @@ export async function Middleware(req: NextRequest, next: () => NextResponse) {
   }
 
   // Call the next middleware or handler in the chain
-  return next()
 }
 
 export const config={
