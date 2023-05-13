@@ -18,8 +18,10 @@ export async function middleware(req:NextRequest){
 
     const url = req.url
 
-    if(url.includes('/') && !verifiedToken){
-        return NextResponse.redirect(new URL('/authentication/login', url))
+    if(url.includes('/authentication/login') && verifiedToken){
+        return NextResponse.redirect(new URL('/', url))
+    }else{
+        return NextResponse.redirect(new URL('/authentication/login', url)) 
     }
 
     // if(req.nextUrl.pathname=='/' && !verifiedToken){
