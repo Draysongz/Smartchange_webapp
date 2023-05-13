@@ -1,7 +1,7 @@
 import {NextRequest, NextResponse} from 'next/server'
 import {verifyAuth} from './lib/auth'
 
-export async function authMiddleware(req: NextRequest, next: () => NextResponse) {
+export async function Middleware(req: NextRequest, next: () => NextResponse) {
 
   // Get the JWT token from the user's cookies
   const token = req.cookies.get('myJWT')?.value
