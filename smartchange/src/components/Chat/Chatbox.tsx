@@ -79,7 +79,7 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
       const response = await fetch('api/message',{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: message});
+      body: JSON.stringify(message)});
       const data = response.json()
       setMessages([...messages, data])
       setNewMessage("")
