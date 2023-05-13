@@ -1,5 +1,5 @@
 import Chat from '../Model/chatModel'
-
+import connectDB from '../db/connection'
 
 
 connectDB()
