@@ -78,10 +78,9 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
         console.log(data)
         const user = data.username
        authContext.setUser({
-        name: user,
-        secret: password
+        data: data
        })
-       console.log(user)
+       console.log("authContext", authContext)
 
       
        router.push('/')

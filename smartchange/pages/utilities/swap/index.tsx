@@ -13,14 +13,13 @@ import algo from './assets/algo.png'
 import star from './assets/star.png'
 import arrow from './assets/arrow.png'
 import { useRouter } from "next/router";
-import { getOrCreateChat } from 'react-chat-engine'
 import {AuthContext} from '../../Context/AuthContext'
 
 
 
 const TypographyPage = () => {
   const [merchantUsers, setMerchantUsers] = useState([]);
-  const[username, setUsername]= useState('')
+  const[userId, setUserId]= useState('')
   
   useEffect(() => {
     async function fetchMerchantUsers() {
@@ -39,47 +38,41 @@ const TypographyPage = () => {
     fetchMerchantUsers();
   }, []);
  
-  console.log(username)
-  function user(username: string) {
-    setUsername(username);
-   
+
+  function user(id: string) {
+    setUserId(id)
+      
   }
+  console.log('userId:', userId);
 
   const authContext = useContext(AuthContext)
-  console.log(authContext)
-  const creds = {
-    userName: authContext.user?.name,
-    userSecret: authContext.user?.secret,
-    projectId: "72fd6d6c-3d31-4837-b92d-1c8725e0f8c8",
-    privateKey: "043648d7-6088-4215-809e-b15aa1c5ec81"
-  };
+ console.log(authContext)
   
   
   
   const router = useRouter();
   
   async function createDirectChat() {
-    
-    const url = 'https://api.chatengine.io/chats/';
-    const response = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Project-ID': `${creds.projectId!}`,
-        'Content-Type': 'application/json',
-        'User-Name': `${creds.userName!} `,
-        'User-Secret': `${creds.userSecret!}`,
-      },
-      body: JSON.stringify({ 
-        usernames: [username, creds.userName],
-        "title": "P2P Trade",
-      })
-    });
-    const data = await response.json();
-    console.log(data)
-    if(data != '' && response.ok){
-      toast.success('Conversation started')
-    router.push('/utilities/chats')
-    return data;
+    try{
+        const response = await fetch('/api/chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({senderId: authContext.user?.data._id, receiverId: userId})
+  });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  const data = await response.json();
+  console.log(data);
+  toast('Chat created successfully')
+  router.push('/utilities/chats')
+  return data;
+}catch(err){
+  console.log(err)
     }
     
   }
@@ -156,7 +149,7 @@ const TypographyPage = () => {
                             </div>
                             <div className={styles.buttons}>
                               <button className={styles.reviews}>Reviews</button>
-                              <button className={styles.select} value={e.username} onClick={() => { user(e.username); createDirectChat(); }}>Select</button>
+                              <button className={styles.select} value={e._id} onClick={() => { user(e._id); createDirectChat();}}>Select</button>
 
                             </div>
                             </CardContent>

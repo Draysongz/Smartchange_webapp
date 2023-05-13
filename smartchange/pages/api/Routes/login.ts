@@ -21,7 +21,7 @@ export default async function login(req: NextApiRequest,
        .setProtectedHeader({alg: 'HS256',})
        .setJti(nanoid())
        .setIssuedAt()
-       .setExpirationTime('10m')
+       .setExpirationTime('1d')
        .sign(new TextEncoder().encode(getJwtSecretKey()))
        const {password, isAdmin, isMerchant, ...others} = user._doc
        

@@ -4,20 +4,16 @@ import PageContainer from '../../../src/components/container/PageContainer';
 import DashboardCard from '../../../src/components/shared/DashboardCard';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import FullLayout from '../../../src/layouts/full/FullLayout';
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { AuthContext } from '../../Context/AuthContext'
-import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { getOrCreateChat, ChatEngine, MessageFormSocial } from 'react-chat-engine';
-
-
-// const ChatEngine = dynamic(() =>
-//   import("react-chat-engine").then((module) => module.ChatEngine)
-// );
-
-// const MessageFormSocial = dynamic(() =>
-//   import("react-chat-engine").then((module) => module.MessageFormSocial)
-// );
+import Chatbox from '../../../src/components/Chat/Chatbox'
+import Conversation from '../../../src/components/Chat/Conversation'
+import NavIcons from '../../../src/components/Chat/NavIcons'
+import Styles from './chat.module.scss'
+import LogoSearch from '../../../src/components/Logosearch/LogoSearch'
+import {io} from 'socket.io-client'
+import { Socket } from 'socket.io';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body1,
@@ -27,68 +23,118 @@ const Item = styled(Paper)(({ theme }) => ({
   lineHeight: '60px',
 }));
 
-interface ChatEngineProps {
-  height: string;
-  projectID: string;
-  userName: string;
-  userSecret: string;
-  renderNewMessageForm: () => JSX.Element;
-  renderNewChatForm: (creds: any) => JSX.Element;
-}
+
+
 
 const darkTheme = createTheme({ palette: { mode: 'dark' } });
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
 const Shadow = () => {
+  const [onlineUsers, setOnlineUsers] = useState<any>([])
+  const [chats, setChats] = useState([]);
+  const [currentChat, setCurrentChat] = useState(null)
+  const [sendMessage, setSendMessage] = useState(null)
+  const [receivedMessage, setReceivedMessage]= useState(null)
   const router = useRouter();
   const authContext = useContext(AuthContext)
   console.log(authContext)
+  const user= authContext.user?.data
+  console.log(user)
 
-  const chatEngineProps: ChatEngineProps = {
-    height: 'calc(100vh - 120px)',
-    projectID: "72fd6d6c-3d31-4837-b92d-1c8725e0f8c8",
-    userName: authContext.user?.name || "",
-    userSecret: authContext.user?.secret || "",
-    renderNewMessageForm: () => <MessageFormSocial />,
-    renderNewChatForm: (creds: any) => renderChatForm(creds)
-  }
 
-  const [username, setUsername] = useState('')
 
-  function createDirectChat(creds: any) {
-    getOrCreateChat(
-      creds,
-      { is_direct_chat: true, usernames: [username] },
-      () => setUsername('')
-    )
-  }
-
-  function renderChatForm(creds: any) {
-    return (
-      <div>
-        <input
-          placeholder='Username'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <button onClick={() => createDirectChat(creds)}>
-          Create
-        </button>
-      </div>
-    )
-  }
-  const [showChat, setShowChat] = useState(false)
-  useEffect(() => {
-    if (typeof document !== undefined) {
-      setShowChat(true)
+  useEffect(()=>{
+    const socketInitializer = async ()=>{
+      const startServer= await fetch('/api/socket')
+      console.log(startServer.json())
+      const socket = io('http://localhost:3001');
+  
+      socket.on('connect', () => {
+        console.log('Connected to server');
+      });
+      
+      // Send a message to the server
+      socket.emit('new-user-add', user._id);
+      
+      // Receive a message from the server
+      socket.on('get-users', (users) => {
+        setOnlineUsers(users)
+        console.log(onlineUsers)
+        console.log('Received message from server:', users);
+      });
     }
+    socketInitializer()
+  }, [user])
+
+
+  useEffect(()=>{
+    if(sendMessage !== null){
+      const socket = io('http://localhost:3001');
+      socket.emit("send-message",sendMessage)
+    }
+  }, [sendMessage])
+  
+  useEffect(()=>{
+    
+      const socket = io('http://localhost:3001');
+      socket.on("receive-message", (data)=>{
+        setReceivedMessage(data)
+      })
+    
   }, [])
+  
+  useEffect(()=>{
+    const getChats = async ()=>{
+      try{
+        const response= await fetch(`http://localhost:3000/api/chat?action=userChats&userId=${user._id}`)
+        const data = await response.json();
+        setChats(data)
+        console.log(data);
+      }catch(err){
+        console.log(err)
+      }
+    }
+    getChats()
+  }, [user])
 
-  if (!showChat) return <div />
-
+  const checkOnlineStatus= (chat)=>{
+    const chatMember= chat.users.find((user)=> user!==user._id)
+    const online = onlineUsers.find((user)=> user.userId === chatMember)
+    return online? true : false;
+  }
   return (
     <PageContainer title="Chat" description="this is Shadow">
-      <ChatEngine {...chatEngineProps} />
+      {/* <div className={Styles.chatHome}>
+        <div className={Styles.container}>
+          <Sidebar />
+          <Chat />
+        </div>
+      </div> */}
+
+      <div className={Styles.Chat}>
+        <div className={Styles.LeftSideChat}>
+          <LogoSearch />
+          <div className={Styles.Chatcontainer}>
+          <h2>Chat</h2>
+          <div className={Styles.Chatlist}>
+          {chats.map((chat)=>(
+              <div onClick={()=>setCurrentChat(chat)}>
+                <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)}/>
+              </div>
+            ))}
+          </div>
+          </div>
+          </div>
+
+
+           <div className={Styles.RightSideChat}>
+            <div style={{width:'20rem', alignSelf: 'flex-end'}}>
+              <NavIcons/>
+            
+            </div>
+            <Chatbox chat={currentChat}  currentUser={user?._id} setSendMessage={setSendMessage} receivedMessage={receivedMessage}/>
+          </div>
+        </div>
     </PageContainer>
   );
 };

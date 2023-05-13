@@ -13,8 +13,7 @@ type AuthContextProviderType = {
 }
 
 type AuthUser = {
-    secret: string,
-    name: string
+    data: Object
 }
 
 export const AuthContext = createContext({} as AuthContextType) 
