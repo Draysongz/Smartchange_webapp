@@ -11,7 +11,7 @@ export async function Middleware(req: NextRequest, NextResponse) {
 
   // If the user is not logged in, redirect them to the login page
   if (!verifiedToken) {
-    return NextResponse.redirect('/authentication/login')
+    return NextResponse.redirect(new URL('/authentication/login'))
   }
 
   // Call the next middleware or handler in the chain
