@@ -1,8 +1,6 @@
 import {NextRequest, NextResponse} from 'next/server'
 import {verifyAuth} from './lib/auth'
 
-
-
 export async function middleware(req:NextRequest){
 
     const token = req.cookies.get('myJWT')?.value
@@ -11,13 +9,14 @@ export async function middleware(req:NextRequest){
     token && 
     (await verifyAuth(token).catch(err => console.log(err)))
 
+    console.log('Token:', token)
+    console.log('Verified Token:', verifiedToken)
+
     // if(req.nextUrl.pathname.startsWith('/authentication/login/') && !verifiedToken){
     //     return
     // }
 
     const url = req.url
-    console.log(req.nextUrl.pathname)
-    console.log(verifiedToken)
 
     if(req.url =='/authentication/login/' && verifiedToken){
         return NextResponse.redirect(new URL('/', url))
@@ -34,13 +33,7 @@ export async function middleware(req:NextRequest){
     if(req.nextUrl.pathname=='/utilities/chats' && !verifiedToken){
         return NextResponse.redirect(new URL('/authentication/login/', url))
     }
-
-
-
-
 }
-
-
 
 export const config={
     matcher:['/','/authentication/login', '/utilities/swap/', '/utilities/chats/']
