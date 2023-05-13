@@ -19,7 +19,7 @@ export async function middleware(req:NextRequest){
     console.log(req.nextUrl.pathname)
     console.log(verifiedToken)
 
-    if(url.includes('/authentication/login/') && verifiedToken){
+    if(req.url =='/authentication/login/' && verifiedToken){
         return NextResponse.redirect(new URL('/', url))
     }
 
@@ -43,5 +43,5 @@ export async function middleware(req:NextRequest){
 
 
 export const config={
-    matcher:['/', '/utilities/swap/', '/utilities/chats/']
+    matcher:['/','/authentication/login', '/utilities/swap/', '/utilities/chats/']
 }
