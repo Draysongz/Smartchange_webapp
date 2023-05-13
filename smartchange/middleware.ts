@@ -17,3 +17,7 @@ export async function authMiddleware(req: NextRequest, next: () => NextResponse)
   // Call the next middleware or handler in the chain
   return next()
 }
+
+export const config={
+    matcher:['/','/authentication/login', '/utilities/swap/', '/utilities/chats/']
+}
