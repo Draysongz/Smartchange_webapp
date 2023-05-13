@@ -1,40 +1,19 @@
-// import {NextRequest, NextResponse} from 'next/server'
-// import {verifyAuth} from './lib/auth'
+import {NextRequest, NextResponse} from 'next/server'
+import {verifyAuth} from './lib/auth'
 
-// export async function middleware(req:NextRequest){
+export async function authMiddleware(req: NextRequest, next: () => NextResponse) {
 
-//     const token = req.cookies.get('myJWT')?.value
+  // Get the JWT token from the user's cookies
+  const token = req.cookies.get('myJWT')?.value
 
-//     const verifiedToken = 
-//     token && 
-//     (await verifyAuth(token).catch(err => console.log(err)))
+  // Verify the JWT token
+  const verifiedToken = token && await verifyAuth(token).catch(err => console.log(err))
 
-//     console.log('Token:', token)
-//     console.log('Verified Token:', verifiedToken)
+  // If the user is not logged in, redirect them to the login page
+  if (!verifiedToken) {
+    return NextResponse.redirect('/authentication/login')
+  }
 
-//     // if(req.nextUrl.pathname.startsWith('/authentication/login/') && !verifiedToken){
-//     //     return
-//     // }
-
-//     const url = req.url
-
-//     if(req.url =='/authentication/login/' && verifiedToken){
-//         return NextResponse.redirect(new URL('/', url))
-//     }
-
-//     if(req.nextUrl.pathname=='/' && !verifiedToken){
-//         return NextResponse.redirect(new URL('/authentication/login/', url))
-//     }
-
-//     if(req.nextUrl.pathname=='/utilities/swap' && !verifiedToken){
-//         return NextResponse.redirect(new URL('/authentication/login/', url))
-//     }
-
-//     if(req.nextUrl.pathname=='/utilities/chats' && !verifiedToken){
-//         return NextResponse.redirect(new URL('/authentication/login/', url))
-//     }
-// }
-
-// export const config={
-//     matcher:['/','/authentication/login', '/utilities/swap/', '/utilities/chats/']
-// }
+  // Call the next middleware or handler in the chain
+  return next()
+}
