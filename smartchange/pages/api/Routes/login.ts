@@ -7,9 +7,11 @@ import {nanoid} from 'nanoid'
 import {getJwtSecretKey} from '../../../lib/auth'
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-connectDB()
+
 export default async function login(req: NextApiRequest,
     res: NextApiResponse){
+
+        await connectDB()
     try{
        const user = await User.findOne({email: req.body.email})
        if(!user)return res.status(404).json('User not found')
