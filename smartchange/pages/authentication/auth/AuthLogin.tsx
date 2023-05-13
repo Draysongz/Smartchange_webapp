@@ -81,8 +81,6 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
         data: data
        })
        console.log("authContext", authContext)
-
-      
        router.push('/')
       } else {
         const { status } = response;
