@@ -18,7 +18,7 @@ export async function middleware(req:NextRequest){
 
     const url = req.url
 
-    if(!verifiedToken){
+    if(url.includes('/') && !verifiedToken){
         return NextResponse.redirect(new URL('/authentication/login', url))
     }
 
