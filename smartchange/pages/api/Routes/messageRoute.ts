@@ -1,6 +1,6 @@
 import Message from '../Model/messageModel'
 
-
+connectDB()
 export const addMessage = async(req, res)=>{
     const {chatId, senderId, content} = req.body
     const message = new Message({

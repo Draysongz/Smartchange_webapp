@@ -2,7 +2,7 @@ import Chat from '../Model/chatModel'
 
 
 
-
+connectDB()
 export const createChat = async (req, res)=>{
     const newChat = new Chat({
         users: [req.body.senderId, req.body.receiverId]

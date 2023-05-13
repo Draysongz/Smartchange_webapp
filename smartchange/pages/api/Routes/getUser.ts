@@ -2,9 +2,10 @@ import User from '../Model/userModel';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../db/connection';
 
-connectDB();
+
 
 export default async function getUserById(req: NextApiRequest, res: NextApiResponse) {
+  await connectDB()
   const {userId }= req.query;
 
   try {
