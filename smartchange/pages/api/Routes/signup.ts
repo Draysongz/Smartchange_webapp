@@ -19,8 +19,8 @@ export default async function signup(req: NextApiRequest,
     } else if (emailExists) {
       return res.status(503).json('Email exists' )
     } else if (phoneExists) {
-      console.log(phoneExists)
       return res.status(503).json('Phone number exists' )
+      console.log(phoneExists)
     } 
 
       const newUser = new User({
