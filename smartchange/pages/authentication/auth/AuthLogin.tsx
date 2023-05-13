@@ -81,7 +81,7 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
         data: data
        })
        console.log("authContext", authContext)
-       router.push('/')
+       await router.push('/')
       } else {
         const { status } = response;
         if (status === 503) {
