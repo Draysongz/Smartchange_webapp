@@ -30,6 +30,7 @@
     "bcryptjs": "^2.4.3",
     "clsx": "^1.2.1",
     "cookie": "^0.5.0",
+    "cookies": "^0.8.0",
     "jose": "^4.13.1",
     "jsonwebtoken": "^9.0.0",
     "jsonwebtoken-promisified": "^1.0.3",
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/cookies": "^0.7.7",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/lodash": "^4.14.191",
     "@types/node": "latest",

@@ -4,7 +4,7 @@ import{SignJWT} from 'jose'
 import {serialize} from 'cookie'
 import connectDB from '../db/connection'
 import {nanoid} from 'nanoid'
-import {getJwtSecretKey} from '../../../lib/auth'
+import {getJwtSecretKey} from '../../../lib/middleware'
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 

@@ -1,42 +1,53 @@
-import {NextRequest, NextResponse} from 'next/server'
-import {verifyAuth} from './lib/auth'
+import {  NextRequest, NextResponse } from 'next/server';
+import { jwtVerify } from 'jose';
 
-export async function middleware(req:NextRequest){
 
-    const token = req.cookies.get('myJWT')?.value
+export const getJwtSecretKey = () => {
+  const secret = process.env.JWT_PASS;
 
-    const verifiedToken = 
-    token && 
-    (await verifyAuth(token).catch(err => console.log(err)))
+  if (!secret || secret.length === 0) {
+    throw new Error('JWT_SECRET_KEY is not set');
+  }
+  return secret;
+};
 
-    console.log('Token:', token)
-    console.log('Verified Token:', verifiedToken)
-
-    // if(req.nextUrl.pathname.startsWith('/authentication/login/') && !verifiedToken){
-    //     return
-    // }
-
+export default async function withAuth(req: NextRequest, res: NextResponse){
+    const jwtCookie = req.cookies.get('myJWT')?.value
+    let isAuthenticated = false;
     const url = req.url
 
-    if(url.includes('/authentication/login') && verifiedToken){
-        return NextResponse.redirect(new URL('/', url))
-    }else{
-        return NextResponse.redirect(new URL('/authentication/login', url)) 
+    console.log(jwtCookie)
+    console.log(url)
+
+    if (jwtCookie) {
+      try {
+        const decoded = await jwtVerify(jwtCookie, new TextEncoder().encode(getJwtSecretKey()))
+        isAuthenticated = true;
+      } catch (err) {
+        console.log('JWT verification failed', err);
+        isAuthenticated = false;
+      }
     }
 
-    // if(req.nextUrl.pathname=='/' && !verifiedToken){
-    //     return NextResponse.redirect(new URL('/authentication/login/', url))
-    // }
+    if (!isAuthenticated && url === 'http://localhost:3000/') {
+        return NextResponse.redirect(new URL('/authentication/login/', url))  
+    }
 
-    // if(req.nextUrl.pathname=='/utilities/swap' && !verifiedToken){
-    //     return NextResponse.redirect(new URL('/authentication/login/', url))
-    // }
+    if(!isAuthenticated && url === 'http://localhost:3000/utilities/swap/'){
+        return NextResponse.redirect(new URL('/authentication/login/', url))    
+    }
 
-    // if(req.nextUrl.pathname=='/utilities/chats' && !verifiedToken){
-    //     return NextResponse.redirect(new URL('/authentication/login/', url))
-    // }
-}
+    if(!isAuthenticated && url === 'http://localhost:3000/utilities/chats/'){
+        return NextResponse.redirect(new URL('/authentication/login/', url))    
+    }
 
-export const config={
+    if(isAuthenticated && url === '/authentication/login/'){
+        return NextResponse.redirect(new URL('/', url))  
+    }
+  };
+
+  export const config={
     matcher:['/','/authentication/login', '/utilities/swap/', '/utilities/chats/']
 }
+
+
