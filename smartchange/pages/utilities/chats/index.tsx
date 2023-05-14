@@ -83,7 +83,7 @@ const SOCKET_URL = process.env.SOCKET_URL ||'http://localhost:3001'
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL  
+  const BASE_URL = process.env.BASE_URL  
   console.log(BASE_URL)
   useEffect(()=>{
     const getChats = async ()=>{
