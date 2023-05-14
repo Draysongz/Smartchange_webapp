@@ -29,10 +29,12 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
     }
   }, [receivedMessage])
 
+  const BASE_URL = process.env.BASE_URL  || 'http://localhost:3000'
+
   useEffect(()=>{
     const fetchMessages = async()=>{
       try{
-        const response =  await fetch(`http://localhost:3000/api/message?action=getMessages&chatId=${chat._id}`)
+        const response =  await fetch(`${BASE_URL}/api/message?action=getMessages&chatId=${chat._id}`)
         const data = await response.json(); 
         console.log(data)
         setMessages(data);
@@ -49,7 +51,7 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
     const userId = chat?.users.find((id)=> id !== currentUser)
     const getUserData = async()=>{
       try{
-        const response= await fetch(`http://localhost:3000/api/getUser?action=getUser&userId=${userId}`)
+        const response= await fetch(`${BASE_URL}/api/getUser?action=getUser&userId=${userId}`)
         const data = await response.json(); 
         setUserData(data)
         console.log(data)
@@ -76,7 +78,7 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
     //send message to database
 
     try{
-      const response = await fetch('api/message',{
+      const response = await fetch(`${BASE_URL}/api/message`,{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(message)});
