@@ -76,7 +76,7 @@ const SOCKET_URL = process.env.SOCKET_URL ||'http://localhost:3001'
   
   useEffect(()=>{
     
-      const socket = io(${SOCKET_URL});
+      const socket = io(`${SOCKET_URL}`);
       socket.on("receive-message", (data)=>{
         setReceivedMessage(data)
       })
