@@ -88,7 +88,7 @@ const SOCKET_URL = process.env.SOCKET_URL ||'http://localhost:3001'
   useEffect(()=>{
     const getChats = async ()=>{
       try{
-        const response= await fetch(`${BASE_URL}/api/chat?action=userChats&userId=${user._id}`)
+        const response= await fetch(`${BASE_URL}?action=userChats&userId=${user._id}`)
         const data = await response.json();
         setChats(data)
         console.log(data);
