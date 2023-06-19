@@ -18,7 +18,7 @@ const Conversation = ({data, currentUserId, online}) => {
     const BASE_URL = 'http://localhost:3000'
     const getUserData = async()=>{
       try{
-        const response= await fetch(`${BASE_URL}/api/getUser?action=getUser&userId=${userId}`)
+        const response= await fetch(`https://smartchange-webapp.vercel.app/api/getUser?action=getUser&userId=${userId}`)
         const data = await response.json(); 
         setUserData(data)
         console.log(data)

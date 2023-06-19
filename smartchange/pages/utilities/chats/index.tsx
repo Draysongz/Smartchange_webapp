@@ -104,8 +104,8 @@ const SOCKET_URL ='http://localhost:3001'
   const getChats = async () => {
     try {
       console.log('Fetching chats...');
-      console.log(`http://localhost:3000/api/chat?action=userChats&userId=${user._id}`)
-      const response = await fetch(`http://localhost:3000/api/chat?action=userChats&userId=${user._id}`);
+      console.log(`https://smartchange-webapp.vercel.app/api/chat?action=userChats&userId=${user._id}`)
+      const response = await fetch(`https://smartchange-webapp.vercel.app//chat?action=userChats&userId=${user._id}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
