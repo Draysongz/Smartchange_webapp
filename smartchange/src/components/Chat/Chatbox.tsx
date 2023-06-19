@@ -98,6 +98,20 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
   useEffect(()=>{
     scroll.current?.scrollIntoView({behavior: "smooth"})
   }, [messages])
+
+  useEffect(()=>{
+    const fetchMessages = async()=>{
+      try{
+        const response =  await fetch(`https://smartchange-webapp.vercel.app//api/message?action=getMessages&chatId=${chat._id}`)
+        const data = await response.json(); 
+        console.log(data)
+        setMessages(data);
+      }catch(err){
+        console.log(err)
+      }
+    }
+    if(chat !== null ) fetchMessages()
+  }, [messages])
   return (
     <>
       <div className={Styles.ChatBoxcontainer}>
