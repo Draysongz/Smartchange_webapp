@@ -1,11 +1,22 @@
 import User from '../Model/userModel';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../db/connection';
+import cors from 'cors';
 
 
+ connectDB()
+const corsHandler = cors();
 
 export default async function getUserById(req: NextApiRequest, res: NextApiResponse) {
-  await connectDB()
+ 
+  await new Promise<void>((resolve, reject) => {
+    corsHandler(req, res, (error: any) => {
+      if (error) {
+        return reject(error);
+      }
+      resolve();
+    });
+  });
   const {userId }= req.query;
 
   try {

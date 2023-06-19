@@ -77,9 +77,15 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
         toast.success('login successful');
         console.log(data)
         const user = data.username
-       authContext.setUser({
-        data: data
-       })
+        const expirationTime = new Date().getTime() + (24 * 60 * 60 * 1000); // 24 hours
+        const userDetails ={
+          data,
+          expirationTime
+        }
+        localStorage.setItem("userData", JSON.stringify(userDetails));
+      //  authContext.setUser({
+      //   data: data
+      //  })
        console.log("authContext", authContext)
        await router.push('/')
       } else {

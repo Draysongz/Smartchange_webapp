@@ -31,79 +31,110 @@ const lightTheme = createTheme({ palette: { mode: 'light' } });
 
 const Shadow = () => {
   const [onlineUsers, setOnlineUsers] = useState<any>([])
-  const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState<any>([]);
+  const [user, setUser] = useState<any>([])
   const [currentChat, setCurrentChat] = useState(null)
   const [sendMessage, setSendMessage] = useState(null)
   const [receivedMessage, setReceivedMessage]= useState(null)
   const router = useRouter();
   const authContext = useContext(AuthContext)
   console.log(authContext)
-  const user= authContext.user?.data
-  console.log(user)
 
-const SOCKET_URL = process.env.SOCKET_URL ||'http://localhost:3001'
 
-  useEffect(()=>{
-    const socketInitializer = async ()=>{
-      const startServer= await fetch('/api/socket')
-      console.log(startServer.json())
-      const socket = io(`${SOCKET_URL}`);
   
-      socket.on('connect', () => {
-        console.log('Connected to server');
-      });
-      
-      // Send a message to the server
-      socket.emit('new-user-add', user._id);
-      
-      // Receive a message from the server
-      socket.on('get-users', (users) => {
-        setOnlineUsers(users)
-        console.log(onlineUsers)
-        console.log('Received message from server:', users);
-      });
-    }
-    socketInitializer()
-  }, [user])
-
-
-  useEffect(()=>{
-    if(sendMessage !== null){
-      const socket = io(`${SOCKET_URL}`);
-      socket.emit("send-message",sendMessage)
-    }
-  }, [sendMessage])
-  
-  useEffect(()=>{
-    
-      const socket = io(`${SOCKET_URL}`);
-      socket.on("receive-message", (data)=>{
-        setReceivedMessage(data)
-      })
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL  
-  console.log(BASE_URL)
-  useEffect(()=>{
-    const getChats = async ()=>{
-      try{
-        const response= await fetch(`${BASE_URL}?action=userChats&userId=${user._id}`)
-        const data = await response.json();
-        setChats(data)
-        console.log(data);
-      }catch(err){
-        console.log(err)
-      }
-    }
-    getChats()
-  }, [user])
-
-  const checkOnlineStatus= (chat)=>{
-    const chatMember= chat.users.find((user)=> user!==user._id)
-    const online = onlineUsers.find((user)=> user.userId === chatMember)
-    return online? true : false;
+useEffect(()=>{
+  const storedData = localStorage.getItem("userData");
+  if (storedData) {
+    const data = JSON.parse(storedData);
+    setUser(data.data);
   }
+}, [])
+  
+     
+const SOCKET_URL ='http://localhost:3001'
+
+  // useEffect(()=>{
+  //   const socketInitializer = async ()=>{
+  //     const startServer= await fetch('/api/socket')
+  //     console.log(startServer.json())
+  //     if(startServer){
+  //       console.log('fetched socket')
+  //     }
+  //     const socket = io(`${SOCKET_URL}`);
+
+  //     if(socket){
+  //       console.log('socket connnected to front end')
+  //     }
+  
+  //     socket.on('connect', () => {
+  //       console.log('Connected to server');
+  //     });
+      
+  //     // Send a message to the server
+  //     socket.emit('new-user-add', user._id);
+      
+  //     // Receive a message from the server
+  //     socket.on('get-users', (users) => {
+  //       setOnlineUsers(users)
+  //       console.log(onlineUsers)
+  //       console.log('Received message from server:', users);
+  //     });
+  //   }
+  //   socketInitializer()
+  // }, [user])
+
+
+  // useEffect(()=>{
+  //   if(sendMessage !== null){
+  //     const socket = io(`${SOCKET_URL}`);
+  //     socket.emit("send-message",sendMessage)
+  //   }
+  // }, [sendMessage])
+  
+  // useEffect(()=>{
+    
+  //     const socket = io(`${SOCKET_URL}`);
+  //     socket.on("receive-message", (data)=>{
+  //       setReceivedMessage(data)
+  //     })
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
+  
+
+  const getChats = async () => {
+    try {
+      console.log('Fetching chats...');
+      console.log(`http://localhost:3000/api/chat?action=userChats&userId=${user._id}`)
+      const response = await fetch(`http://localhost:3000/api/chat?action=userChats&userId=${user._id}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('Chats fetched:', data);
+      setChats(data);
+    } catch (error) {
+      console.log('Error fetching chats:', error);
+    }
+  };
+  
+
+  useEffect(() => {
+    if (user && user._id) {
+      getChats(); // Call the getChats function here
+    }
+    console.log(user)
+  }, [user]);
+
+  const checkOnlineStatus = (chat) => {
+    if (user && user._id) {
+      const chatMember = chat.users.find((userId) => userId !== user._id);
+      const online = onlineUsers.find((user) => user.userId === chatMember);
+      return online ? true : false;
+    }
+    return false;
+  };
+
+  
   return (
     <PageContainer title="Chat" description="this is Shadow">
       {/* <div className={Styles.chatHome}>

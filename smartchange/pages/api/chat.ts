@@ -1,24 +1,33 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import {createChat, userChats, findChat} from './Routes/chatRoute'
+import { createChat, userChats, findChat } from './Routes/chatRoute';
 import connectDB from './db/connection';
+import cors from 'cors';
 
-connectDB()
+connectDB();
+
+const corsHandler = cors();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === 'POST') {
-      // Call the createChat function
-      await createChat(req, res);
-    } else if (req.method === 'GET') {
-      if (req.query.action === 'userChats') {
-        // Call the userChats function
-        await userChats(req, res);
-      } else if (req.query.action === 'findChat') {
-        // Call the findChat function
-        await findChat(req, res);
-      } else {
-        res.status(404).send('Not found');
+  await new Promise<void>((resolve, reject) => {
+    corsHandler(req, res, (error: any) => {
+      if (error) {
+        return reject(error);
       }
+      resolve();
+    });
+  });
+
+  if (req.method === 'POST') {
+    await createChat(req, res);
+  } else if (req.method === 'GET') {
+    if (req.query.action === 'userChats') {
+      await userChats(req, res);
+    } else if (req.query.action === 'findChat') {
+      await findChat(req, res);
     } else {
-      res.status(405).send('Method not allowed');
+      res.status(404).send('Not found');
     }
+  } else {
+    res.status(405).send('Method not allowed');
   }
+}

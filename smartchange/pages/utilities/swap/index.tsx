@@ -20,6 +20,7 @@ import {AuthContext} from '../../Context/AuthContext'
 const TypographyPage = () => {
   const [merchantUsers, setMerchantUsers] = useState([]);
   const[userId, setUserId]= useState('')
+  const [userd, setUserd] = useState<any>([])
   
   useEffect(() => {
     async function fetchMerchantUsers() {
@@ -49,17 +50,27 @@ const TypographyPage = () => {
  console.log(authContext)
   
   
-  
+useEffect(()=>{
+  const storedData = localStorage.getItem("userData");
+  if (storedData) {
+    const data = JSON.parse(storedData);
+    setUserd(data.data);
+  }
+}, [])
+ 
+
   const router = useRouter();
   
   async function createDirectChat() {
+    console.log(userd._id)
+    console.log(userId)
     try{
         const response = await fetch('/api/chat', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({senderId: authContext.user?.data._id, receiverId: userId})
+    body: JSON.stringify({senderId: userd._id, receiverId: userId})
   });
 
   if (!response.ok) {
