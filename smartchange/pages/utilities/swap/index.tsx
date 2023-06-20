@@ -61,7 +61,24 @@ useEffect(()=>{
  
 
   const router = useRouter();
+  useEffect(() => {
+    async function createChatAndRedirect() {
+      if (userId) {
+        try {
+          const senderId = userd._id;
+          const receiverId = userId;
+          const chat = await createChat(senderId, receiverId);
+          console.log('Chat created:', chat);
+          toast('Chat created successfully');
+          router.push('/utilities/chats');
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
   
+    createChatAndRedirect();
+  }, [userId]); 
   async function createDirectChat() {
     console.log(userd._id)
     console.log(userId)
