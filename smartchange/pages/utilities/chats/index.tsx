@@ -129,7 +129,8 @@ const SOCKET_URL ='http://localhost:3001'
       getChats(); // Call the getChats function here
     }
     console.log(user)
-  }, [user]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, chats]);
 
   const checkOnlineStatus = (chat) => {
     if (user && user._id) {
