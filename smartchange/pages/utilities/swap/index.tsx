@@ -66,7 +66,11 @@ useEffect(()=>{
     console.log(userd._id)
     console.log(userId)
     try{
-      createChat(userd._id, userId)
+      const senderId=userd._id
+      const receiverId = userId
+      const chat = await createChat(senderId, receiverId);
+      console.log('Chat created:', chat);
+      // Do something with the created chat
       toast('Chat created successfully')
       router.push('/utilities/chats')
   
