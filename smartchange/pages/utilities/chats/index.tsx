@@ -46,7 +46,7 @@ const Shadow = () => {
     if(newMessageReceived){
       toast.info('new message received')
     }
-  }, [])
+  }, [newMessageReceived])
   
 useEffect(()=>{
   const storedData = localStorage.getItem("userData");
