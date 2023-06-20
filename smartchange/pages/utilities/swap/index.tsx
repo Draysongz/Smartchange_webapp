@@ -14,6 +14,7 @@ import star from './assets/star.png'
 import arrow from './assets/arrow.png'
 import { useRouter } from "next/router";
 import {AuthContext} from '../../../src/components/Context/AuthContext'
+import { createChat } from '../../api/functions/chat';
 
 
 
@@ -65,24 +66,11 @@ useEffect(()=>{
     console.log(userd._id)
     console.log(userId)
     try{
-        const response = await fetch('/api/chat', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({senderId: userd._id, receiverId: userId})
-  });
-
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-
-  const data = await response.json();
-  console.log(data);
-  toast('Chat created successfully')
-  router.push('/utilities/chats')
-  return data;
-}catch(err){
+      createChat(userd._id, userId)
+      toast('Chat created successfully')
+      router.push('/utilities/chats')
+  
+    }catch(err){
   console.log(err)
     }
     
