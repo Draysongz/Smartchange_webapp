@@ -5,6 +5,7 @@ import img1 from "../../../public/images/profile/user.svg"
 import { format } from "timeago.js";
 import { useRef } from "react";
 import InputEmoji from 'react-input-emoji'
+import { toast } from 'react-toastify';
 
 
 
@@ -25,17 +26,27 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
     setNewMessage(newMessage)
   }
 
-  useEffect(()=>{
-    if(receivedMessage !== null && receivedMessage.chatId=== chat._id){
-      setMessages([...messages, receivedMessage])
+  useEffect(() => {
+    if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
+      setMessages([...messages, receivedMessage]);
+      toast.info('New message received!', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
-  }, [receivedMessage])
+  }, [receivedMessage]);
+  
 
 
   useEffect(()=>{
     const fetchMessages = async()=>{
       try{
-        const response =  await fetch(`https://smartchange-webapp.vercel.app//api/message?action=getMessages&chatId=${chat._id}`)
+        const response =  await fetch(`https://smartchange-webapp.vercel.app/api/message?action=getMessages&chatId=${chat._id}`)
         const data = await response.json(); 
         console.log(data)
         setMessages(data);
@@ -77,7 +88,7 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
     //send message to database
 
     try{
-      const response = await fetch(`https://smartchange-webapp.vercel.app//api/message`,{
+      const response = await fetch(`https://smartchange-webapp.vercel.app/api/message`,{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(message)});
@@ -102,7 +113,7 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
   useEffect(()=>{
     const fetchMessages = async()=>{
       try{
-        const response =  await fetch(`https://smartchange-webapp.vercel.app//api/message?action=getMessages&chatId=${chat._id}`)
+        const response =  await fetch(`https://smartchange-webapp.vercel.app/api/message?action=getMessages&chatId=${chat._id}`)
         const data = await response.json(); 
         console.log(data)
         setMessages(data);
@@ -111,7 +122,7 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
       }
     }
     if(chat !== null ) fetchMessages()
-  }, [messages])
+  }, [chat, messages])
   return (
     <>
       <div className={Styles.ChatBoxcontainer}>

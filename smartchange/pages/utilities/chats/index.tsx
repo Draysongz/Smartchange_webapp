@@ -12,8 +12,6 @@ import Conversation from '../../../src/components/Chat/Conversation'
 import NavIcons from '../../../src/components/Chat/NavIcons'
 import Styles from './chat.module.scss'
 import LogoSearch from '../../../src/components/Logosearch/LogoSearch'
-import {io} from 'socket.io-client'
-import { Socket } from 'socket.io';
 import { toast } from 'react-toastify';
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body1,
@@ -54,52 +52,44 @@ useEffect(()=>{
      
 const SOCKET_URL ='http://localhost:3001'
 
-  // useEffect(()=>{
-  //   const socketInitializer = async ()=>{
-  //     const startServer= await fetch('/api/socket')
-  //     console.log(startServer.json())
-  //     if(startServer){
-  //       console.log('fetched socket')
-  //     }
-  //     const socket = io(`${SOCKET_URL}`);
-
-  //     if(socket){
-  //       console.log('socket connnected to front end')
-  //     }
-  
-  //     socket.on('connect', () => {
-  //       console.log('Connected to server');
-  //     });
-      
-  //     // Send a message to the server
-  //     socket.emit('new-user-add', user._id);
-      
-  //     // Receive a message from the server
-  //     socket.on('get-users', (users) => {
-  //       setOnlineUsers(users)
-  //       console.log(onlineUsers)
-  //       console.log('Received message from server:', users);
-  //     });
-  //   }
-  //   socketInitializer()
-  // }, [user])
 
 
-  // useEffect(()=>{
-  //   if(sendMessage !== null){
-  //     const socket = io(`${SOCKET_URL}`);
-  //     socket.emit("send-message",sendMessage)
-  //   }
-  // }, [sendMessage])
-  
-  // useEffect(()=>{
+
+
+
+
+
+  useEffect(()=>{
+    const socket = new WebSocket('ws://localhost:3000/api/socket');
+    socket.addEventListener('open', (event) => {
+      console.log('WebSocket connection established.');
+      socket.send(JSON.stringify({ event: 'new-user-add', data: user._id }));
+    });
     
-  //     const socket = io(`${SOCKET_URL}`);
-  //     socket.on("receive-message", (data)=>{
-  //       setReceivedMessage(data)
-  //     })
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+    socket.addEventListener('message', (event) => {
+      const message = JSON.parse(event.data);
+      const { event: eventName, data } = message;
+    
+      if (eventName === 'get-users') {
+        // Handle the event 'get-users' and update the list of active users
+        console.log('Received active users:', data);
+        setOnlineUsers(data)
+      } else if (eventName === 'receive-message') {
+        // Handle the event 'receive-message' and process the received message
+        console.log('Received message:', data);
+        console.log(data)
+      }
+      setReceivedMessage(data)
+      console.log(receivedMessage)
+    });
+    
+    socket.addEventListener('close', (event) => {
+      console.log('WebSocket connection closed.');
+    });
+    
+  }, [user])
+
+
   
 
   const getChats = async () => {

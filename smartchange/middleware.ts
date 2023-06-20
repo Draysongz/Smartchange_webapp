@@ -29,15 +29,15 @@ export default async function withAuth(req: NextRequest, res: NextResponse){
       }
     }
 
-    if (!isAuthenticated && url === 'http://localhost:3000/') {
+    if (!isAuthenticated && url === 'https://smartchange-webapp.vercel.app/') {
         return NextResponse.redirect(new URL('/authentication/login/', url))  
     }
 
-    if(!isAuthenticated && url === 'http://localhost:3000/utilities/swap/'){
+    if(!isAuthenticated && url === 'https://smartchange-webapp.vercel.app/utilities/swap/'){
         return NextResponse.redirect(new URL('/authentication/login/', url))    
     }
 
-    if(!isAuthenticated && url === 'http://localhost:3000/utilities/chats/'){
+    if(!isAuthenticated && url === 'https://smartchange-webapp.vercel.app/utilities/chats/'){
         return NextResponse.redirect(new URL('/authentication/login/', url))    
     }
 

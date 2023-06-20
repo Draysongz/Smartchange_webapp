@@ -15,7 +15,7 @@ const Conversation = ({data, currentUserId, online}) => {
     const userId = data.users.find((id)=>id !== currentUserId)
     console.log(userId)
 
-    const BASE_URL = 'http://localhost:3000'
+    const BASE_URL = 'https://smartchange-webapp.vercel.app'
     const getUserData = async()=>{
       try{
         const response= await fetch(`https://smartchange-webapp.vercel.app/api/getUser?action=getUser&userId=${userId}`)
