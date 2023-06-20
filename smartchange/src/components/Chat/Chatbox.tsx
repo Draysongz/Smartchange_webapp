@@ -5,7 +5,7 @@ import img1 from "../../../public/images/profile/user.svg"
 import { format } from "timeago.js";
 import { useRef } from "react";
 import InputEmoji from 'react-input-emoji'
-import { NotificationContext } from '../../../pages/Context/NotificationContext';
+import { NotificationContext } from '../Context/NotificationContext';
 
 
 interface UserData {

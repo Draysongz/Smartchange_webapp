@@ -3,7 +3,7 @@ import Styles from '../../../pages/utilities/chats/chat.module.scss'
 // import Image from 'Next/image'
 import img1 from "../../../public/images/profile/user.svg"
 import Image from 'next/image'
-import {AuthContext} from '../../../pages/Context/AuthContext'
+import {AuthContext} from '../Context/AuthContext'
 const Navbar = () => {
   const authContext = useContext(AuthContext)
   console.log(authContext.user?.name)

@@ -5,7 +5,7 @@ import DashboardCard from '../../../src/components/shared/DashboardCard';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import FullLayout from '../../../src/layouts/full/FullLayout';
 import React, { useState, useEffect, useContext, useRef } from 'react'
-import { AuthContext } from '../../Context/AuthContext'
+import { AuthContext } from '../../../src/components/Context/AuthContext'
 import { useRouter } from "next/router";
 import Chatbox from '../../../src/components/Chat/Chatbox'
 import Conversation from '../../../src/components/Chat/Conversation'
@@ -14,7 +14,7 @@ import Styles from './chat.module.scss'
 import LogoSearch from '../../../src/components/Logosearch/LogoSearch'
 import {io} from 'socket.io-client'
 import { Socket } from 'socket.io';
-import { NotificationContext } from '../../Context/NotificationContext';
+import { NotificationContext } from '../../../src/components/Context/NotificationContext';
 import { toast } from 'react-toastify';
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body1,

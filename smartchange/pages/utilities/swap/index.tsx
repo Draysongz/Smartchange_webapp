@@ -13,7 +13,7 @@ import algo from './assets/algo.png'
 import star from './assets/star.png'
 import arrow from './assets/arrow.png'
 import { useRouter } from "next/router";
-import {AuthContext} from '../../Context/AuthContext'
+import {AuthContext} from '../../../src/components/Context/AuthContext'
 
 
 

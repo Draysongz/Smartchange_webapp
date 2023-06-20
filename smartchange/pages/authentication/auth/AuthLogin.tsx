@@ -18,7 +18,7 @@ import udlogo from './ud.webp'
 import Image from 'next/image'
 
 import CustomTextField from "../../../src/components/forms/theme-elements/CustomTextField";
-import {AuthContext} from '../../Context/AuthContext'
+import {AuthContext} from '../../../src/components/Context/AuthContext'
 
 
 interface loginType {

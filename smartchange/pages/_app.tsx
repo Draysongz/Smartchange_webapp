@@ -12,8 +12,8 @@ import createEmotionCache from "../src/createEmotionCache";
 import { baselightTheme } from "../src/theme/DefaultColors";
 import {useEffect} from 'react'
 
-import AuthContextProvider from './Context/AuthContext'
-import { NotificationProvider } from "./Context/NotificationContext";
+import AuthContextProvider from '../src/components/Context/AuthContext'
+import { NotificationProvider } from "../src/components/Context/NotificationContext";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
