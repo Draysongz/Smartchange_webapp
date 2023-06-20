@@ -14,7 +14,8 @@ import Styles from './chat.module.scss'
 import LogoSearch from '../../../src/components/Logosearch/LogoSearch'
 import {io} from 'socket.io-client'
 import { Socket } from 'socket.io';
-
+import { NotificationContext } from '../../Context/NotificationContext';
+import { toast } from 'react-toastify';
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body1,
   textAlign: 'center',
@@ -40,7 +41,12 @@ const Shadow = () => {
   const authContext = useContext(AuthContext)
   console.log(authContext)
 
-
+  const {newMessageReceived, toggleNotification} = useContext(NotificationContext)
+  useEffect(()=>{
+    if(newMessageReceived){
+      toast.info('new message received')
+    }
+  }, [])
   
 useEffect(()=>{
   const storedData = localStorage.getItem("userData");
@@ -48,7 +54,7 @@ useEffect(()=>{
     const data = JSON.parse(storedData);
     setUser(data.data);
   }
-}, [])
+}, [receivedMessage])
   
      
 const SOCKET_URL ='http://localhost:3001'

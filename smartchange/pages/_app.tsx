@@ -13,6 +13,7 @@ import { baselightTheme } from "../src/theme/DefaultColors";
 import {useEffect} from 'react'
 
 import AuthContextProvider from './Context/AuthContext'
+import { NotificationProvider } from "./Context/NotificationContext";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -37,6 +38,7 @@ const MyApp = (props: MyAppProps) => {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
+    <NotificationProvider>
     <AuthContextProvider>
     <CacheProvider value={emotionCache}>
       <Head>
@@ -51,6 +53,7 @@ const MyApp = (props: MyAppProps) => {
       <ToastContainer/>
     </CacheProvider>
     </AuthContextProvider>
+    </NotificationProvider>
   );
 };
 

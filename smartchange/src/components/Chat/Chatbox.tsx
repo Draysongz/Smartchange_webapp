@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import Styles from './chatbox.module.css'
 import Image from 'next/image'
 import img1 from "../../../public/images/profile/user.svg"
 import { format } from "timeago.js";
 import { useRef } from "react";
 import InputEmoji from 'react-input-emoji'
+import { NotificationContext } from '../../../pages/Context/NotificationContext';
 
 
 interface UserData {
@@ -18,6 +19,9 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
   const [messages, setMessages] = useState<any>([]);
   const [newMessage, setNewMessage] = useState("");
   const scroll = useRef<any>()
+
+
+  const { setNewMessageReceived } = useContext(NotificationContext);
 
   const handleChange = (newMessage)=> {
     setNewMessage(newMessage)
@@ -43,6 +47,20 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
     }
     if(chat !== null ) fetchMessages()
   }, [chat])
+
+  useEffect(() => {
+    setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+  }, [receivedMessage]);
+
+  useEffect(() => {
+    const isMessageReceived = messages.some(
+      (message) => message._id === receivedMessage?._id
+    );
+
+    if (receivedMessage && !isMessageReceived) {
+      setNewMessageReceived(true);
+    }
+  }, [messages, receivedMessage, setNewMessageReceived]);
 
 
  
