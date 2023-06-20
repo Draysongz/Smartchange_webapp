@@ -13,6 +13,8 @@ import NavIcons from '../../../src/components/Chat/NavIcons'
 import Styles from './chat.module.scss'
 import LogoSearch from '../../../src/components/Logosearch/LogoSearch'
 import { toast } from 'react-toastify';
+
+
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body1,
   textAlign: 'center',
@@ -40,6 +42,10 @@ const Shadow = () => {
 
 
 
+
+
+
+
   
 useEffect(()=>{
   const storedData = localStorage.getItem("userData");
@@ -49,13 +55,6 @@ useEffect(()=>{
   }
 }, [receivedMessage])
   
-     
-const SOCKET_URL ='http://localhost:3001'
-
-
-
-
-
 
 
 

@@ -75,7 +75,7 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
   }, [chat, currentUser])
 
 
- 
+
 
 
   const handleSend = async (e)=>{
@@ -105,6 +105,15 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
     setSendMessage({...message, receiverId});
   }
 
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      // Prevent the default behavior of the enter key (form submission)
+      event.preventDefault();
+      // Call the send message function
+      handleSend(event);
+    }
+  };
   //always scroll to last message
   useEffect(()=>{
     scroll.current?.scrollIntoView({behavior: "smooth"})
@@ -160,6 +169,7 @@ const Chatbox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
             <InputEmoji
             value = {newMessage}
             onChange= {handleChange}
+            onKeyDown={handleKeyDown}
             />
             <div className={`${Styles.sendbutton} ${Styles.button}`} onClick={handleSend}>
               Send

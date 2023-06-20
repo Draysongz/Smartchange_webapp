@@ -22,6 +22,7 @@
     "@tabler/icons-react": "^2.1.1",
     "@uauth/js": "^2.4.0",
     "@uauth/web3-react": "^2.4.1-rc.0",
+    "@vonage/server-sdk": "^3.5.1",
     "@walletconnect/ethereum-provider": "^2.4.8",
     "@web3-react/core": "^8.1.2-beta.0",
     "@web3-react/metamask": "^8.1.2-beta.0",
