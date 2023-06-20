@@ -61,40 +61,20 @@ useEffect(()=>{
  
 
   const router = useRouter();
-  useEffect(() => {
-    async function createChatAndRedirect() {
-      if (userId) {
-        try {
-          const senderId = userd._id;
-          const receiverId = userId;
-          const chat = await createChat(senderId, receiverId);
-          console.log('Chat created:', chat);
-          toast('Chat created successfully');
-          router.push('/utilities/chats');
-        } catch (err) {
-          console.log(err);
-        }
+  
+
+  async function createDirectChat(receiverId: string | null) {
+    if (receiverId) {
+      try {
+        const senderId = userd._id;
+        const chat = await createChat(senderId, receiverId);
+        console.log('Chat created:', chat);
+        toast('Chat created successfully');
+        router.push('/utilities/chats');
+      } catch (err) {
+        console.log(err);
       }
     }
-  
-    createChatAndRedirect();
-  }, [userId]); 
-  async function createDirectChat() {
-    console.log(userd._id)
-    console.log(userId)
-    try{
-      const senderId=userd._id
-      const receiverId = userId
-      const chat = await createChat(senderId, receiverId);
-      console.log('Chat created:', chat);
-      // Do something with the created chat
-      toast('Chat created successfully')
-      router.push('/utilities/chats')
-  
-    }catch(err){
-  console.log(err)
-    }
-    
   }
   
   
@@ -169,7 +149,7 @@ useEffect(()=>{
                             </div>
                             <div className={styles.buttons}>
                               <button className={styles.reviews}>Reviews</button>
-                              <button className={styles.select} value={e._id} onClick={() => { user(e._id); createDirectChat();}}>Select</button>
+                              <button className={styles.select} value={e._id} onClick={() => createDirectChat(e._id)}>Select</button>
 
                             </div>
                             </CardContent>
