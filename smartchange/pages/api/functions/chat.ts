@@ -6,7 +6,8 @@ export async function createChat(senderId, receiverId) {
       senderId: senderId,
       receiverId: receiverId
     });
-    return response.data;
+    console.log(response.data);
+    return response.data
   } catch (error) {
     console.error('Error creating chat:', error);
     throw error;
